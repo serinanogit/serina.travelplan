@@ -25,3 +25,11 @@ document.querySelectorAll('h4').forEach(h4=>{
 document.querySelectorAll('#food .hint').forEach(box=>{
   if(box.textContent.includes('黑糖糕留到 8/30 再買')) box.remove();
 });
+
+// 移除所有寫「原則」的提示框／頁尾說明。
+document.querySelectorAll('.hint, .notice, .warn, .footer-note').forEach(el=>{
+  if(el.textContent.includes('原則')) el.remove();
+});
+
+// 移除灰色小字提醒。
+document.querySelectorAll('.tiny').forEach(el=>el.remove());
