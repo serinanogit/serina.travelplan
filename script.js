@@ -33,3 +33,33 @@ document.querySelectorAll('.hint, .notice, .warn, .footer-note').forEach(el=>{
 
 // 移除灰色小字提醒。
 document.querySelectorAll('.tiny').forEach(el=>el.remove());
+
+// 票券／憑證平台註記。
+document.querySelectorAll('.check-item span').forEach(span=>{
+  if(span.textContent.trim()==='船票／訂位資訊') span.textContent='船票／訂位資訊（Klook）';
+  if(span.textContent.trim()==='機車租車憑證') span.textContent='機車租車憑證（KKday）';
+});
+
+document.querySelectorAll('.item-card').forEach(card=>{
+  const title=card.querySelector('h4')?.textContent || '';
+  if(title.includes('🛵 機車') && !card.textContent.includes('KKday')){
+    const p=document.createElement('p');
+    p.innerHTML='<strong>取車憑證：</strong>KKday｜現場出示憑證';
+    card.appendChild(p);
+  }
+  if(title.includes('⛴️ 回程') && !card.textContent.includes('Klook')){
+    const p=document.createElement('p');
+    p.innerHTML='<strong>船票：</strong>Klook';
+    card.appendChild(p);
+  }
+});
+
+// Day 1 取車卡片補充 KKday 憑證提醒。
+document.querySelectorAll('.spot-card').forEach(card=>{
+  const title=card.querySelector('.spot-title strong')?.textContent || '';
+  if(title.includes('取機車') && !card.textContent.includes('KKday')){
+    const p=document.createElement('p');
+    p.innerHTML='<strong>憑證：</strong>KKday 預訂，現場出示取車憑證。';
+    card.appendChild(p);
+  }
+});
