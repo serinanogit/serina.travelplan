@@ -1,0 +1,1 @@
+const boxes=document.querySelectorAll('input[type="checkbox"][data-save]');boxes.forEach(box=>{const key='penghu_'+box.dataset.save;if(localStorage.getItem(key)==='true')box.checked=true;box.addEventListener('change',()=>localStorage.setItem(key,box.checked));});
