@@ -23,7 +23,7 @@ document.querySelectorAll('h4').forEach(h4=>{
 });
 
 document.querySelectorAll('#food .hint').forEach(box=>{
-  if(box.textContent.includes('黑糖糕留到 8/30 再買')) box.remove();
+  if(box.textContent.includes('黑糖糕')) box.remove();
 });
 
 // 移除所有寫「原則」的提示框／頁尾說明。
