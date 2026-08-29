@@ -64,7 +64,7 @@ document.querySelectorAll('.spot-card').forEach(card=>{
   }
 });
 
-// 8/29 現場調整：風櫃洞提早逛完，後續行程全部往前，提早回民宿休息。
+// 8/29 現場調整：風櫃洞已逛完，接著完成市區行程後去潮間帶，再買蔥油餅回民宿。
 const day1=document.querySelector('#day1');
 const day1Timeline=day1?.querySelector('.timeline');
 if(day1Timeline){
@@ -80,7 +80,7 @@ if(day1Timeline){
 
   if(wind) setTime(wind,'～11:20｜已完成');
 
-  // 改成：風櫃洞 → 篤行十村 → 午餐 → 小吃 → 民宿。
+  // 改成：風櫃洞 → 篤行十村 → 午餐 → 潮間帶 → 蔥油餅 → 民宿。
   if(village && lunch) day1Timeline.insertBefore(village,lunch);
 
   if(village){
@@ -94,28 +94,39 @@ if(day1Timeline){
     if(p) p.textContent='逛完篤行十村後吃午餐，依當下餓的程度調整份量。';
   }
   if(snack){
-    setTime(snack,'13:35–14:20');
+    setTime(snack,'13:30 後');
+    const title=snack.querySelector('.spot-title strong');
+    if(title) title.textContent='🦀 潮間帶玩一下 → 🧅 遊局口蔥油餅';
+    const spot=snack.querySelector('.spot-card');
+    const grid=snack.querySelector('.food-grid');
+    if(spot && grid && !spot.querySelector('.live-update-note')){
+      const p=document.createElement('p');
+      p.className='live-update-note';
+      p.textContent='先去海邊潮間帶玩、找小螃蟹；玩完再去買遊局口蔥油餅，買完直接回島嶼時光休息。';
+      spot.insertBefore(p,grid);
+    }
   }
   if(hotel){
-    setTime(hotel,'14:30–17:30');
+    setTime(hotel,'買完蔥油餅後–17:30');
     const title=hotel.querySelector('.spot-title strong');
     if(title) title.textContent='🏨 島嶼時光｜提早回民宿休息';
     const p=hotel.querySelector('.spot-card > p');
-    if(p) p.innerHTML='<strong>14:30–16:00：</strong>先在民宿大廳／公共空間坐著休息。<br><strong>16:00：</strong>正式入住。<br><strong>16:00–17:30：</strong>回房洗澡、躺一下，18:00 再出門吃飯。';
+    if(p) p.innerHTML='<strong>16:00 前：</strong>若還不能進房，就先在民宿大廳／公共空間坐著休息。<br><strong>16:00：</strong>正式入住。<br><strong>16:00–17:30：</strong>回房洗澡、躺一下，18:00 再出門吃飯。';
   }
 }
 
-// 今天不吃澎福素食煎餅，從行程、總覽與美食整理中移除。
+// 今天下午只保留遊局口蔥油餅；建國炸粿與澎福素食煎餅先不吃。
 document.querySelectorAll('#day1 .food-card').forEach(card=>{
-  if(card.textContent.includes('澎福素食')) card.remove();
+  if(card.textContent.includes('建國炸粿') || card.textContent.includes('澎福素食')) card.remove();
 });
 document.querySelectorAll('#food li').forEach(li=>{
-  if(li.textContent.includes('澎福素食')) li.remove();
+  if(li.textContent.includes('建國炸粿') || li.textContent.includes('澎福素食')) li.remove();
 });
 document.querySelectorAll('#overview .item-card p').forEach(p=>{
   if(p.textContent.includes('鐘記燒餅')){
     p.innerHTML=p.innerHTML
       .replace('蔡記饌蔬食坊 → 篤行十村','篤行十村 → 蔡記饌蔬食坊')
-      .replace('建國炸粿／澎福素食／遊局口蔥油餅','建國炸粿／遊局口蔥油餅');
+      .replace('建國炸粿／澎福素食／遊局口蔥油餅','潮間帶 → 遊局口蔥油餅')
+      .replace('建國炸粿／遊局口蔥油餅','潮間帶 → 遊局口蔥油餅');
   }
 });
