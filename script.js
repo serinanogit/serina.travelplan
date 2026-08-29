@@ -96,14 +96,22 @@ if(day1Timeline){
   if(snack){
     setTime(snack,'13:30 後');
     const title=snack.querySelector('.spot-title strong');
-    if(title) title.textContent='🦀 潮間帶玩一下 → 🧅 遊局口蔥油餅';
+    if(title) title.textContent='🦀 鐵線漁港附近潮間帶 → 🧅 遊局口蔥油餅';
     const spot=snack.querySelector('.spot-card');
     const grid=snack.querySelector('.food-grid');
     if(spot && grid && !spot.querySelector('.live-update-note')){
       const p=document.createElement('p');
       p.className='live-update-note';
-      p.textContent='先去海邊潮間帶玩、找小螃蟹；玩完再去買遊局口蔥油餅，買完直接回島嶼時光休息。';
+      p.textContent='先到鐵線漁港附近的潮間帶玩、找小螃蟹；玩完再去買遊局口蔥油餅，買完直接回島嶼時光休息。';
       spot.insertBefore(p,grid);
+    }
+    if(spot && grid && !spot.querySelector('.tiexian-map-link')){
+      const a=document.createElement('a');
+      a.className='mini-link tiexian-map-link';
+      a.target='_blank';
+      a.href='https://www.google.com/maps/search/?api=1&query=%E9%90%B5%E7%B7%9A%E6%BC%81%E6%B8%AF+%E6%BE%8E%E6%B9%96';
+      a.textContent='📍 Google Maps｜鐵線漁港';
+      spot.insertBefore(a,grid);
     }
   }
   if(hotel){
@@ -126,7 +134,8 @@ document.querySelectorAll('#overview .item-card p').forEach(p=>{
   if(p.textContent.includes('鐘記燒餅')){
     p.innerHTML=p.innerHTML
       .replace('蔡記饌蔬食坊 → 篤行十村','篤行十村 → 蔡記饌蔬食坊')
-      .replace('建國炸粿／澎福素食／遊局口蔥油餅','潮間帶 → 遊局口蔥油餅')
-      .replace('建國炸粿／遊局口蔥油餅','潮間帶 → 遊局口蔥油餅');
+      .replace('建國炸粿／澎福素食／遊局口蔥油餅','鐵線漁港附近潮間帶 → 遊局口蔥油餅')
+      .replace('建國炸粿／遊局口蔥油餅','鐵線漁港附近潮間帶 → 遊局口蔥油餅')
+      .replace('潮間帶 → 遊局口蔥油餅','鐵線漁港附近潮間帶 → 遊局口蔥油餅');
   }
 });
