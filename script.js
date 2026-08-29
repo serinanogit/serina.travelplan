@@ -12,15 +12,24 @@ while((node=walker.nextNode())){
   if(node.nodeValue.includes('你')) node.nodeValue=node.nodeValue.replaceAll('你','我');
 }
 
-// 移除不需要的個人標籤與重複提醒。
+// 統一蔥油餅店名。
 document.querySelectorAll('h4').forEach(h4=>{
-  if(h4.textContent.includes('遊局口蔥油餅')){
-    h4.textContent='🧅 遊局口蔥油餅 ⭐';
+  if(h4.textContent.includes('遊局口蔥油餅') || h4.textContent.includes('郵局口蔥油餅')){
+    h4.textContent='🧅 郵局口蔥油餅 ⭐';
   }
   if(h4.textContent.includes('許的重點')){
     h4.closest('.item-card')?.remove();
   }
 });
+
+// 其他文字中若還有舊店名，一併更新。
+const nameWalker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+let nameNode;
+while((nameNode=nameWalker.nextNode())){
+  if(nameNode.nodeValue.includes('遊局口蔥油餅')){
+    nameNode.nodeValue=nameNode.nodeValue.replaceAll('遊局口蔥油餅','郵局口蔥油餅');
+  }
+}
 
 document.querySelectorAll('#food .hint').forEach(box=>{
   if(box.textContent.includes('黑糖糕')) box.remove();
@@ -64,7 +73,7 @@ document.querySelectorAll('.spot-card').forEach(card=>{
   }
 });
 
-// 8/29 現場調整：風櫃洞已逛完，接著完成市區行程後去潮間帶，再買蔥油餅回民宿。
+// 8/29 現場調整：風櫃洞已逛完，接著完成市區行程後去嵵裡沙灘，再買蔥油餅回民宿。
 const day1=document.querySelector('#day1');
 const day1Timeline=day1?.querySelector('.timeline');
 if(day1Timeline){
@@ -80,7 +89,7 @@ if(day1Timeline){
 
   if(wind) setTime(wind,'～11:20｜已完成');
 
-  // 改成：風櫃洞 → 篤行十村 → 午餐 → 潮間帶 → 蔥油餅 → 民宿。
+  // 改成：風櫃洞 → 篤行十村 → 午餐 → 嵵裡沙灘 → 郵局口蔥油餅 → 民宿。
   if(village && lunch) day1Timeline.insertBefore(village,lunch);
 
   if(village){
@@ -96,22 +105,27 @@ if(day1Timeline){
   if(snack){
     setTime(snack,'13:30 後');
     const title=snack.querySelector('.spot-title strong');
-    if(title) title.textContent='🦀 鐵線漁港附近潮間帶 → 🧅 遊局口蔥油餅';
+    if(title) title.textContent='🏖️ 嵵裡沙灘 → 🧅 郵局口蔥油餅';
     const spot=snack.querySelector('.spot-card');
     const grid=snack.querySelector('.food-grid');
-    if(spot && grid && !spot.querySelector('.live-update-note')){
-      const p=document.createElement('p');
-      p.className='live-update-note';
-      p.textContent='先到鐵線漁港附近的潮間帶玩、找小螃蟹；玩完再去買遊局口蔥油餅，買完直接回島嶼時光休息。';
-      spot.insertBefore(p,grid);
-    }
-    if(spot && grid && !spot.querySelector('.tiexian-map-link')){
-      const a=document.createElement('a');
-      a.className='mini-link tiexian-map-link';
-      a.target='_blank';
-      a.href='https://www.google.com/maps/search/?api=1&query=%E9%90%B5%E7%B7%9A%E6%BC%81%E6%B8%AF+%E6%BE%8E%E6%B9%96';
-      a.textContent='📍 Google Maps｜鐵線漁港';
-      spot.insertBefore(a,grid);
+    if(spot && grid){
+      let p=spot.querySelector('.live-update-note');
+      if(!p){
+        p=document.createElement('p');
+        p.className='live-update-note';
+        spot.insertBefore(p,grid);
+      }
+      p.textContent='先去嵵裡沙灘玩海、看看礁岸潮間帶；玩完一路往馬公市區買郵局口蔥油餅，再回島嶼時光休息。';
+
+      spot.querySelector('.tiexian-map-link')?.remove();
+      if(!spot.querySelector('.shili-map-link')){
+        const a=document.createElement('a');
+        a.className='mini-link shili-map-link';
+        a.target='_blank';
+        a.href='https://www.google.com/maps/search/?api=1&query=%E5%B5%B5%E8%A3%A1%E6%B5%B7%E6%B0%B4%E6%B5%B4%E5%A0%B4+%E6%BE%8E%E6%B9%96';
+        a.textContent='📍 Google Maps｜嵵裡沙灘';
+        spot.insertBefore(a,grid);
+      }
     }
   }
   if(hotel){
@@ -123,7 +137,7 @@ if(day1Timeline){
   }
 }
 
-// 今天下午只保留遊局口蔥油餅；建國炸粿與澎福素食煎餅先不吃。
+// 今天下午只保留郵局口蔥油餅；建國炸粿與澎福素食煎餅先不吃。
 document.querySelectorAll('#day1 .food-card').forEach(card=>{
   if(card.textContent.includes('建國炸粿') || card.textContent.includes('澎福素食')) card.remove();
 });
@@ -134,8 +148,9 @@ document.querySelectorAll('#overview .item-card p').forEach(p=>{
   if(p.textContent.includes('鐘記燒餅')){
     p.innerHTML=p.innerHTML
       .replace('蔡記饌蔬食坊 → 篤行十村','篤行十村 → 蔡記饌蔬食坊')
-      .replace('建國炸粿／澎福素食／遊局口蔥油餅','鐵線漁港附近潮間帶 → 遊局口蔥油餅')
-      .replace('建國炸粿／遊局口蔥油餅','鐵線漁港附近潮間帶 → 遊局口蔥油餅')
-      .replace('潮間帶 → 遊局口蔥油餅','鐵線漁港附近潮間帶 → 遊局口蔥油餅');
+      .replace('建國炸粿／澎福素食／郵局口蔥油餅','嵵裡沙灘 → 郵局口蔥油餅')
+      .replace('建國炸粿／郵局口蔥油餅','嵵裡沙灘 → 郵局口蔥油餅')
+      .replace('鐵線漁港附近潮間帶 → 郵局口蔥油餅','嵵裡沙灘 → 郵局口蔥油餅')
+      .replace('潮間帶 → 郵局口蔥油餅','嵵裡沙灘 → 郵局口蔥油餅');
   }
 });
